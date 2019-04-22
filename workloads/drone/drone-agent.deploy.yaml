@@ -1,0 +1,70 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: drone-agent
+  namespace: drone
+  labels:
+    app.kubernetes.io/name: drone-agent
+  annotations:
+    flux.weave.works/automated: "true"
+    flux.weave.works/tag.drone: semver:~1.0
+
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: drone-agent
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: drone-agent
+    spec:
+      containers:
+        - name: drone
+          image: drone/agent:1.0.1
+          env:
+            - name: DRONE_RPC_SERVER
+              value: https://ci.stevenxie.me
+            - name: DRONE_RUNNER_CAPACITY
+              value: "2"
+            - name: DRONE_RUNNER_NAME
+              value: monastery
+          envFrom:
+            - secretRef:
+                name: drone-agent
+          ports:
+            - name: http
+              containerPort: 80
+              protocol: TCP
+            - name: https
+              containerPort: 443
+              protocol: TCP
+          resources:
+            requests:
+              cpu: 1m
+              memory: 15Mi
+            limits:
+              cpu: 25m
+              memory: 75Mi
+          volumeMounts:
+            - name: docker-socket
+              mountPath: /var/run/docker.sock
+      volumes:
+        - name: docker-socket
+          hostPath:
+            path: /var/run/docker.sock
+
+---
+
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+
+metadata:
+  name: drone-agent
+  namespace: drone
+
+spec:
+  encryptedData:
+    DRONE_RPC_SECRET: AgBiBgV81ByNGs1GZLS4n9TxW/9YCL2QqsJSGjghQboj5BVvyiUi9NMmnB5bi8Dv9s8isad89IcwRR7/eN7n2o/jSS2XC3YLhVPjVBEofMoalxoHia76kvRVCgjWlGSGQYt0wXIvmcf0CtajDNCko1nZB8iHs8EnKjmIGaLhI4gmPN2GdtM2gdbIHSOJDdH8GhMDSH8YWtR1xJi6ySNqcrJ5Ixs6zNobEalAkbVd1CtIxR1DU3xP0IgyHxTaqNUcaUv8kH50X34yg0dHma6yX72qTMa1JTxXEIYOgXJ9jom82gZmctwU1Pp5h3VWLLP4hcrEEbHFpB9W1nlo/ERJrdaOftGRMyWLy1KIJRp4faar3kyrgZhR1IqOCDED37CqZZCLmB22BcyUI6r6wDNq2O6wN/xC6g/4nO9jYgUMp4ng5fKOTDtdMlDPnYV16TBZFm6Er5qf1Om8KOgjpHq8uvv5y7uJn5VuiQD31zroY/vGttekcpQINwQ+Ykypgw/M487TKAtCXEi2DNkLhuHckgAqvLdD3MhXq0y/HVhsLxDLkk/QS4rLTOdXzUM7D5BLmp5O43e+hhxcq+i4jvHu7iigCdOFAKnoWCYqTbkqYko/XdjrONFmoUWCFvrOWhwCUULP/5JKs9oeal+QtlvpkY6bI0qmZYvwMuS8pnJ5IUuXeknVNd0st+auqsg2HA6d1dqA59LCgRX0ZnjBYwgIBFF0tw0HWkZ760hKXIjRtUV00xLRFClVkS1IZhyHhujSdkgjPyvIQYGkVMcSMyBk78oZ
