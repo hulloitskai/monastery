@@ -1,5 +1,5 @@
 git:
-  url: git@github.com:stevenxie/monastary
+  url: git@github.com:stevenxie/monastery
   path: cluster,workloads
 
 image:

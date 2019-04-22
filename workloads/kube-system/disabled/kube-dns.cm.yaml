@@ -1,0 +1,15 @@
+---
+
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: kube-dns
+  namespace: kube-system
+  annotations:
+    flux.weave.works/ignore: "true"
+
+data:
+  # Proxy .global services to istiocoredns.
+  stubDomains: |
+    {"global": ["10.152.183.193"]}

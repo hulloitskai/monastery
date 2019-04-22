@@ -3,6 +3,8 @@
 _My secondary K8s cluster for CPU-intensive tasks. Configured using
 [Flux](https://github.com/weaveworks/flux)!_
 
+[![UptimeRobot][status-img]][status]
+
 ## Directories
 
 - [`cluster`](./cluster) – a GitOps-enabled directory that contains cluster-wide
@@ -26,5 +28,5 @@ K8s `Secret` resources should be encrypted using
 [`sealed-secrets`](https://github.com/bitnami-labs/sealed-secrets), using a
 process described in [`sealed-secrets/README.md`](./sealed-secrets/README.md).
 
-<!-- [status]: https://monastery.stevenxie.me
-[status-img]: https://img.shields.io/uptimerobot/ratio/m782295595-128aab6d398761c64ab1b883.svg -->
+[status]: https://monastery.stevenxie.me
+[status-img]: https://img.shields.io/uptimerobot/ratio/m782484785-180097cd384f5e66763e5e6d.svg
