@@ -1,0 +1,83 @@
+---
+
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+  name: frpc
+  namespace: proxy
+  annotations:
+    flux.weave.works/automated: "true"
+    flux.weave.works/tag.frp: semver:~0.26
+
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: frpc
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: frpc
+    spec:
+      containers:
+        - name: frp
+          image: stevenxie/frp:0.26.0
+          command: ["frpc"]
+          args:
+            - -c
+            - frpc.ini
+          envFrom:
+            - secretRef:
+                name: frpc
+          volumeMounts:
+            - name: config
+              mountPath: /etc/frp
+          resources:
+            requests:
+              cpu: 1m
+              memory: 5Mi
+            limits:
+              cpu: 75m
+              memory: 75Mi
+      volumes:
+        - name: config
+          configMap:
+            name: frpc
+
+---
+
+apiVersion: v1
+kind: ConfigMap
+
+metadata:
+  name: frpc
+  namespace: proxy
+
+data:
+  frpc.ini: |
+    [common]
+    server_addr = frps.stevenxie.me
+    server_port = 30070
+    tls_enable = true
+    token = {{ .Envs.TOKEN }}
+
+    [ingress]
+    type = tcp
+    local_ip = weave-scope-app.weave-scope.svc.cluster.local
+    local_port = 80
+    remote_port = 8000
+    use_encryption = true
+    use_compression = true
+
+---
+
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+
+metadata:
+  name: frpc
+  namespace: proxy
+
+spec:
+  encryptedData:
+    TOKEN: AgB08RKZVPp2RE91tGkR8IjwHZm9pqL8F4yLreXdg6hMfJ8QDV5Trc3AMextt3LSuq/EokbruBxpxRDNTDhvr1KhjAZSuoxuujV0FihRPPrBNuoOE8FssO1pl+BNBDPBkRqsPrbKm3mMFzswlpk4qvacZftkR6jmXRkLvU0dqAWEdOnNKjKkjvareIaQQmDP42oEyWdA4joyGsi5yHWHoPthjsJmuWizjLFtpHEAkVHhfFeS7C72KY43T0sypVwahzkd0cwaLoS/0snSEQ5LQz0epTtHQ+5j9RsUNWh8H/IkEjoQXyI6HrdlBRlOnNJ20AQyNFWymcN0iTQh7HFF6eQvTHifwSfgq30iBOAF1mCb1nK5Wte5e4SsoBqrV8pgkbdHYiyvsqLYkx3KEj7ROvP7YKtAyf7wBr1qRmt3xVYSd9xqckuRoNNjjPrfE6oSYzmSjv3eZY0AV/aG87wR+JxQit9nz+2NVZ28YNRUaTiIyscQjDxdj/jhqz7jNbP6reh7UvTTzck284xlKnzIVmfvAtSrDA36kgnBNrijaIqqAQXJApTNIAZhy++lWwiCCoM0RDqA0h3C+tcTPoBglrpIheJAAQj5cM3MUjL2yWthbT98uAZpl5zQF7CShT1CJDimbSoPkR1ddwuYzOOI8nnEbgaEl2BM41COlxFbMgP9HRlWX46OUD3f3TnANnnipTM+3TtQdozD6eKRw2E0DjnUm1O72nFjHN8ym0oxC2zcp1XlLJU90iHTtnJAx/Dzg4fmzy546Rkmu8rCJUHL8hI6

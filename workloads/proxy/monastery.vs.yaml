@@ -1,0 +1,30 @@
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+
+metadata:
+  name: monastery
+  namespace: proxy
+
+spec:
+  gateways: ["proxy"]
+  hosts:
+    - monastery.stevenxie.me
+    - k8s.monastery.stevenxie.me
+  tcp:
+    - match:
+        - port: 30022
+      route:
+        - destination:
+            host: frps
+            port:
+              number: 22
+  tls:
+    - match:
+        - sniHosts: ["k8s.monastery.stevenxie.me"]
+      route:
+        - destination:
+            host: frps
+            port:
+              number: 443
