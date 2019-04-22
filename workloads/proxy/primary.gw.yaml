@@ -4,7 +4,7 @@ apiVersion: networking.istio.io/v1alpha3
 kind: Gateway
 
 metadata:
-  name: global
+  name: primary
   namespace: proxy
 
 spec:
@@ -15,4 +15,4 @@ spec:
         name: http
         number: 80
         protocol: HTTP
-      hosts: ["*.global"]
+      hosts: ["*.cluster.monastery"]
