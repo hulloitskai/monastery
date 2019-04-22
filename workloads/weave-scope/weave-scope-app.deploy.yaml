@@ -62,7 +62,7 @@ metadata:
     weave-scope-component: app
 
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app.kubernetes.io/name: weave-scope
     weave-cloud-component: scope
@@ -72,4 +72,26 @@ spec:
       port: 80
       protocol: TCP
       targetPort: 4040
-      nodePort: 30080
+
+---
+
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+
+metadata:
+  name: weave-scope-app
+  namespace: weave-scope
+
+spec:
+  gateways: ["global.proxy"]
+  hosts: ["weave-scope-app.weave-scope.global"]
+  http:
+    - route:
+        - destination:
+            host: weave-scope-app
+            port:
+              number: 80
+          headers:
+            response:
+              set:
+                X-Service: weave-scope-app

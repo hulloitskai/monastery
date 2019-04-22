@@ -63,7 +63,7 @@ data:
 
     [ingress]
     type = tcp
-    local_ip = weave-scope-app.weave-scope.svc.cluster.local
+    local_ip = istio-ingressgateway.istio-system.svc.cluster.local
     local_port = 80
     remote_port = 8000
     use_encryption = true
