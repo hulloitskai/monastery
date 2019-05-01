@@ -5,7 +5,7 @@ kind: Deployment
 
 metadata:
   name: frpc
-  namespace: proxy
+  namespace: gateway
   annotations:
     flux.weave.works/automated: "true"
     flux.weave.works/tag.frp: semver:~0.26
@@ -51,7 +51,7 @@ kind: ConfigMap
 
 metadata:
   name: frpc
-  namespace: proxy
+  namespace: gateway
 
 data:
   frpc.ini: |
@@ -76,8 +76,8 @@ kind: SealedSecret
 
 metadata:
   name: frpc
-  namespace: proxy
+  namespace: gateway
 
 spec:
   encryptedData:
-    TOKEN: AgB08RKZVPp2RE91tGkR8IjwHZm9pqL8F4yLreXdg6hMfJ8QDV5Trc3AMextt3LSuq/EokbruBxpxRDNTDhvr1KhjAZSuoxuujV0FihRPPrBNuoOE8FssO1pl+BNBDPBkRqsPrbKm3mMFzswlpk4qvacZftkR6jmXRkLvU0dqAWEdOnNKjKkjvareIaQQmDP42oEyWdA4joyGsi5yHWHoPthjsJmuWizjLFtpHEAkVHhfFeS7C72KY43T0sypVwahzkd0cwaLoS/0snSEQ5LQz0epTtHQ+5j9RsUNWh8H/IkEjoQXyI6HrdlBRlOnNJ20AQyNFWymcN0iTQh7HFF6eQvTHifwSfgq30iBOAF1mCb1nK5Wte5e4SsoBqrV8pgkbdHYiyvsqLYkx3KEj7ROvP7YKtAyf7wBr1qRmt3xVYSd9xqckuRoNNjjPrfE6oSYzmSjv3eZY0AV/aG87wR+JxQit9nz+2NVZ28YNRUaTiIyscQjDxdj/jhqz7jNbP6reh7UvTTzck284xlKnzIVmfvAtSrDA36kgnBNrijaIqqAQXJApTNIAZhy++lWwiCCoM0RDqA0h3C+tcTPoBglrpIheJAAQj5cM3MUjL2yWthbT98uAZpl5zQF7CShT1CJDimbSoPkR1ddwuYzOOI8nnEbgaEl2BM41COlxFbMgP9HRlWX46OUD3f3TnANnnipTM+3TtQdozD6eKRw2E0DjnUm1O72nFjHN8ym0oxC2zcp1XlLJU90iHTtnJAx/Dzg4fmzy546Rkmu8rCJUHL8hI6
+    TOKEN: AgBlbCndpvHrx1w+e1ZfHfqQUlHPeF11qvYVWF2xKU9DUPc8GPhTg5JXshk2XFFm5Z1m+uu228SlJw49KoSC5Dk9a9s4VouACVp/3BcGilta2iMSK9VCgrefaTxIWbEm4xhFNzwup3tff6Y9YmWOZ4lJ9d6CuhdPyy8nwuPv+LkyZzLf/Y1ZUWJZBjSQ4na8j0JiWk30aJI/tY2YALrstcoEaBvUgnS4OaKMNyqY16JKjXP4Kx21doBEBWIRvPQE65+k5tanGXtK+eQ+yKv/Ag2FHyCfKg/mI/S0IqgYBHjwIYNoK3hZOYXh0Z80FrvZeU9IWR3OqPVMe2UG2lW0CgZKXnvSuPEMSZAD8TVc9tkMxoY8ohFHN3z4iSBxYUTgaRppm8hyZZuJ3SkIIdyoKEcVN6FcwjmnsKmRExR5xVvQ3G5i0LruXxR9D21p0Z1ED4t0fV+a2oBJTJqhHHDZuE/OdVB0nBq2TtUHW51hSPOE77u63EoVDx2uuwxjcI3LB2toRR8zNkDgFJ43E0hWCOHVJbu1rbnbExNxBYqb1acqJobNqTfCzpsModvEohMFHxgEINbYsDuWCSg/YBzl8qz80QLRMi4dZQbzNkfSwPTNegX51NSZMQmyeELUJgxQRz+Qdry6/P3XRRPHAeGVCKSy8tS7uXlTruvECMbO3+ZmPW2Z8SucncV/t2pAFmYKGfGV0IhMIR8z2xPB0IDMCu41bOTFuNlPAW8jSIGXo3s1ehTFYwe4j73lbejgADaJfmpnp3paYNCKiiNgEKDw9cle

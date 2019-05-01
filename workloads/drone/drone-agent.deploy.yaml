@@ -25,12 +25,12 @@ spec:
         - name: drone
           image: drone/agent:1.0.1
           env:
+            - name: DRONE_RUNNER_NAME
+              value: monastery
             - name: DRONE_RPC_SERVER
               value: https://ci.stevenxie.me
             - name: DRONE_RUNNER_CAPACITY
               value: "2"
-            - name: DRONE_RUNNER_NAME
-              value: monastery
           envFrom:
             - secretRef:
                 name: drone-agent

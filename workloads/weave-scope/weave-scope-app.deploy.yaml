@@ -38,7 +38,6 @@ spec:
             - --weave=false
           ports:
             - containerPort: 4040
-              hostPort: 18080
               protocol: TCP
           resources:
             requests:
@@ -62,7 +61,6 @@ metadata:
     weave-scope-component: app
 
 spec:
-  type: ClusterIP
   selector:
     app.kubernetes.io/name: weave-scope
     weave-cloud-component: scope
@@ -83,14 +81,12 @@ metadata:
   namespace: weave-scope
 
 spec:
-  gateways: ["primary.proxy"]
+  gateways: ["primary.gateway"]
   hosts: ["weave-scope-app.weave-scope.svc.cluster.monastery"]
   http:
     - route:
         - destination:
             host: weave-scope-app
-            port:
-              number: 80
           headers:
             response:
               set:
