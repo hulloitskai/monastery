@@ -28,25 +28,24 @@ spec:
         weave-scope-component: app
     spec:
       containers:
-        - name: app
-          image: weaveworks/scope:1.10.2
-          imagePullPolicy: IfNotPresent
-          command: ["/home/weave/scope"]
-          args:
-            - --mode=app
-            - --app-only
-            - --weave=false
-          ports:
-            - containerPort: 4040
-              protocol: TCP
-          resources:
-            requests:
-              cpu: 25m
-              memory: 125Mi
-            limits:
-              cpu: 100m
-              memory: 200Mi
-
+      - name: app
+        image: weaveworks/scope:1.11.0
+        imagePullPolicy: IfNotPresent
+        command: ["/home/weave/scope"]
+        args:
+        - --mode=app
+        - --app-only
+        - --weave=false
+        ports:
+        - containerPort: 4040
+          protocol: TCP
+        resources:
+          requests:
+            cpu: 25m
+            memory: 125Mi
+          limits:
+            cpu: 100m
+            memory: 200Mi
 ---
 
 apiVersion: v1
@@ -66,11 +65,10 @@ spec:
     weave-cloud-component: scope
     weave-scope-component: app
   ports:
-    - name: app
-      port: 80
-      protocol: TCP
-      targetPort: 4040
-
+  - name: app
+    port: 80
+    protocol: TCP
+    targetPort: 4040
 ---
 
 apiVersion: networking.istio.io/v1alpha3
@@ -84,10 +82,10 @@ spec:
   gateways: ["primary.gateway"]
   hosts: ["weave-scope-app.weave-scope.svc.cluster.monastery"]
   http:
-    - route:
-        - destination:
-            host: weave-scope-app
-          headers:
-            response:
-              set:
-                X-Service: weave-scope-app
+  - route:
+    - destination:
+        host: weave-scope-app
+      headers:
+        response:
+          set:
+            X-Service: weave-scope-app
